@@ -1,0 +1,27 @@
+const ROLES = {
+  STUDENT: 'student',
+  TEACHER: 'teacher',
+  PRINCIPAL: 'principal',
+};
+
+const PROGRESS_STATES = {
+  NOT_STARTED: 'not-started',
+  IN_PROGRESS: 'in-progress',
+  COMPLETED: 'completed',
+};
+
+const ALLOWED_ROLES = [ROLES.STUDENT, ROLES.TEACHER, ROLES.PRINCIPAL];
+
+const PROGRESS_STATES_ARRAY = [
+  PROGRESS_STATES.NOT_STARTED,
+  PROGRESS_STATES.IN_PROGRESS,
+  PROGRESS_STATES.COMPLETED,
+];
+
+module.exports = {
+  ROLES,
+  PROGRESS_STATES,
+  ALLOWED_ROLES,
+  PROGRESS_STATES_ARRAY,
+};
+

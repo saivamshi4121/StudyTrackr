@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
+const { PROGRESS_STATES_ARRAY } = require('../utils/constants');
 
 const { Schema } = mongoose;
-
-const progressStates = ['not-started', 'in-progress', 'completed'];
 
 const taskSchema = new Schema(
   {
@@ -25,7 +24,7 @@ const taskSchema = new Schema(
     },
     progress: {
       type: String,
-      enum: progressStates,
+      enum: PROGRESS_STATES_ARRAY,
       default: 'not-started',
     },
   },

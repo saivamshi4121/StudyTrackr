@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
+const { ALLOWED_ROLES } = require('../utils/constants');
 
 const { Schema } = mongoose;
-
-const roles = ['student', 'teacher', 'principal'];
 
 const userSchema = new Schema(
   {
@@ -25,7 +24,7 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: roles,
+      enum: ALLOWED_ROLES,
       required: true,
       default: 'student',
     },

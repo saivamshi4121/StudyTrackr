@@ -1,6 +1,5 @@
 const { body, param } = require('express-validator');
-
-const progressStates = ['not-started', 'in-progress', 'completed'];
+const { PROGRESS_STATES_ARRAY } = require('../constants');
 
 const baseTaskValidators = [
   body('title').optional().trim().notEmpty().withMessage('Title is required'),
@@ -12,8 +11,8 @@ const baseTaskValidators = [
     .toDate(),
   body('progress')
     .optional()
-    .isIn(progressStates)
-    .withMessage(`Progress must be one of: ${progressStates.join(', ')}`),
+    .isIn(PROGRESS_STATES_ARRAY)
+    .withMessage(`Progress must be one of: ${PROGRESS_STATES_ARRAY.join(', ')}`),
 ];
 
 const createTaskValidators = [
