@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDb = require('./config/db');
 const baseRouter = require('./routes');
+const errorHandler = require('./middlewares/errorMiddleware');
 
 const app = express();
 
@@ -11,14 +12,7 @@ app.use(express.json());
 
 app.use('/api', baseRouter);
 
-app.use((err, req, res, next) => {
-  // eslint-disable-line no-unused-vars
-  const statusCode = err.statusCode || 500;
-  res.status(statusCode).json({
-    success: false,
-    message: err.message || 'Internal server error',
-  });
-});
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
