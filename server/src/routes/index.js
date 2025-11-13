@@ -1,10 +1,12 @@
 const express = require('express');
 
 const authRoutes = require('./authRoutes');
+const taskRoutes = require('./taskRoutes');
 
 const router = express.Router();
 
 router.use('/auth', authRoutes);
+router.use('/tasks', taskRoutes);
 
 router.get('/health', (req, res) => {
   res.json({ success: true, message: 'Server is healthy' });
