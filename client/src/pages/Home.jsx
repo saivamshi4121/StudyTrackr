@@ -28,7 +28,7 @@ export default function Home() {
           {/* Right: Hero Image */}
           <div className="order-first md:order-last animate-fade-in-right">
             <img
-              src="./public/assets/hero.png"
+              src="/assets/hero.png"
               alt="StudyTrackr Hero"
               className="w-full rounded-xl shadow-lg image-hover"
             />
@@ -42,7 +42,7 @@ export default function Home() {
           {/* Left: Feature Image */}
           <div className="animate-fade-in-left">
             <img
-              src="./public/assets/feature1.png"
+              src="/assets/feature1.png"
               alt="Task Management Feature"
               className="w-full rounded-xl shadow-lg image-hover"
             />
@@ -96,7 +96,7 @@ export default function Home() {
           {/* Right: Feature Image */}
           <div className="animate-fade-in-right">
             <img
-              src="./public/assets/feature2.png"
+              src="/assets/feature2.png"
               alt="Collaboration Feature"
               className="w-full rounded-xl shadow-lg image-hover"
             />
