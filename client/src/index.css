@@ -20,6 +20,16 @@ html, body, #root {
   padding: 0;
 }
 
+@keyframes fade {
+  0%   { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.animate-fade {
+  animation: fade 2.5s ease forwards;
+}
+
 @layer base {
   body {
     @apply bg-white text-black;
