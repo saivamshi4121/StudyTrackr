@@ -45,78 +45,99 @@ const TaskCard = ({
     onUpdate(task._id, updateData);
   };
 
+  const getProgressBadgeClass = (progress) => {
+    switch (progress) {
+      case 'not-started':
+        return 'progress-badge progress-not-started';
+      case 'in-progress':
+        return 'progress-badge progress-in-progress';
+      case 'completed':
+        return 'progress-badge progress-completed';
+      default:
+        return 'progress-badge progress-not-started';
+    }
+  };
+
   if (isEditing) {
     return (
-      <div style={{ border: '1px solid #ccc', padding: '1rem', margin: '0.5rem 0' }}>
-        <form onSubmit={handleSubmit}>
+      <div className="card-task">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label>Title:</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
             <input
               type="text"
               name="title"
+              className="input"
               value={formData.title}
               onChange={handleChange}
               required
             />
           </div>
           <div>
-            <label>Description:</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
             <textarea
               name="description"
+              className="input"
               value={formData.description}
               onChange={handleChange}
+              rows="3"
             />
           </div>
           <div>
-            <label>Due Date:</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
             <input
               type="date"
               name="dueDate"
+              className="input"
               value={formData.dueDate}
               onChange={handleChange}
             />
           </div>
           <div>
-            <label>Progress:</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Progress</label>
             <ProgressDropdown
               value={formData.progress}
               onChange={handleProgressChange}
             />
           </div>
-          <button type="submit">Save</button>
-          <button type="button" onClick={onCancelEdit}>
-            Cancel
-          </button>
+          <div className="flex space-x-3">
+            <button type="submit" className="btn-secondary">Save</button>
+            <button type="button" onClick={onCancelEdit} className="btn-danger">
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     );
   }
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '1rem', margin: '0.5rem 0' }}>
-      <h3>{task.title}</h3>
-      {task.description && <p>{task.description}</p>}
+    <div className="card-task">
+      <h3 className="text-xl font-semibold text-black mb-2">{task.title}</h3>
+      {task.description && <p className="text-gray-600 mb-3">{task.description}</p>}
       {task.dueDate && (
-        <p>
+        <p className="text-gray-600 mb-2">
           <strong>Due:</strong> {new Date(task.dueDate).toLocaleDateString()}
         </p>
       )}
-      <p>
-        <strong>Progress:</strong> {task.progress}
-      </p>
-      <p>
-        <small>Created: {new Date(task.createdAt).toLocaleDateString()}</small>
+      <span className={getProgressBadgeClass(task.progress)}>
+        {task.progress.replace('-', ' ')}
+      </span>
+      <p className="text-sm text-gray-500 mt-3">
+        Created: {new Date(task.createdAt).toLocaleDateString()}
       </p>
       {!readOnly && onEdit && onDelete && (
-        <>
-          <button onClick={() => onEdit(task._id)}>Edit</button>
-          <button onClick={() => onDelete(task._id)} style={{ marginLeft: '0.5rem' }}>
+        <div className="mt-4 flex space-x-3">
+          <button onClick={() => onEdit(task._id)} className="btn-secondary">
+            Edit
+          </button>
+          <button onClick={() => onDelete(task._id)} className="btn-danger">
             Delete
           </button>
-        </>
+        </div>
       )}
       {readOnly && (
-        <p style={{ fontStyle: 'italic', color: '#666' }}>Read-only (Student task)</p>
+        <p className="mt-3 italic text-gray-500">Read-only (Student task)</p>
       )}
     </div>
   );

@@ -10,6 +10,7 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null }) => {
       : '',
     progress: initialData?.progress || 'not-started',
   });
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData({
@@ -25,13 +26,51 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null }) => {
     });
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Title validation
+    if (!formData.title.trim()) {
+      newErrors.title = 'Title is required';
+    } else if (formData.title.trim().length < 3) {
+      newErrors.title = 'Title must be at least 3 characters';
+    }
+
+    // Due date validation (if provided)
+    if (formData.dueDate) {
+      const dueDate = new Date(formData.dueDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (dueDate < today) {
+        newErrors.dueDate = 'Due date cannot be in the past';
+      }
+    }
+
+    // Progress validation
+    const validProgress = ['not-started', 'in-progress', 'completed'];
+    if (!validProgress.includes(formData.progress)) {
+      newErrors.progress = 'Invalid progress value';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
     const submitData = {
       ...formData,
+      title: formData.title.trim(),
+      description: formData.description.trim(),
       dueDate: formData.dueDate ? new Date(formData.dueDate).toISOString() : undefined,
     };
     onSubmit(submitData);
+    setErrors({});
     if (!initialData) {
       // Reset form only for new tasks
       setFormData({
@@ -44,51 +83,69 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ border: '1px solid #ccc', padding: '1rem', margin: '1rem 0' }}>
-      <h3>{initialData ? 'Edit Task' : 'Create New Task'}</h3>
+    <form onSubmit={handleSubmit} className="card space-y-4">
+      <h3 className="text-2xl font-bold text-black mb-4">{initialData ? 'Edit Task' : 'Create New Task'}</h3>
       <div>
-        <label htmlFor="title">Title: *</label>
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+          Title: *
+        </label>
         <input
           type="text"
           id="title"
           name="title"
+          className="input"
           value={formData.title}
           onChange={handleChange}
           required
         />
+        {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
       </div>
       <div>
-        <label htmlFor="description">Description:</label>
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+          Description
+        </label>
         <textarea
           id="description"
           name="description"
+          className="input"
           value={formData.description}
           onChange={handleChange}
+          rows="3"
         />
       </div>
       <div>
-        <label htmlFor="dueDate">Due Date:</label>
+        <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 mb-1">
+          Due Date
+        </label>
         <input
           type="date"
           id="dueDate"
           name="dueDate"
+          className="input"
           value={formData.dueDate}
           onChange={handleChange}
         />
+        {errors.dueDate && <p className="text-red-500 text-sm mt-1">{errors.dueDate}</p>}
       </div>
       <div>
-        <label htmlFor="progress">Progress:</label>
+        <label htmlFor="progress" className="block text-sm font-medium text-gray-700 mb-1">
+          Progress
+        </label>
         <ProgressDropdown
           value={formData.progress}
           onChange={handleProgressChange}
         />
       </div>
-      <button type="submit">{initialData ? 'Update Task' : 'Create Task'}</button>
-      {onCancel && (
-        <button type="button" onClick={onCancel} style={{ marginLeft: '0.5rem' }}>
-          Cancel
+      <div className="flex space-x-3">
+        <button type="submit" className="btn-primary">
+          {initialData ? 'Update Task' : 'Create Task'}
         </button>
-      )}
+        {onCancel && (
+          <button type="button" onClick={onCancel} className="btn-danger">
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 };

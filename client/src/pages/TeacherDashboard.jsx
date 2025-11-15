@@ -11,6 +11,7 @@ const TeacherDashboard = () => {
   const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [activeTab, setActiveTab] = useState('all'); // 'all', 'my', 'students'
+  const [progressFilter, setProgressFilter] = useState('all');
 
   useEffect(() => {
     fetchTasks();
@@ -82,78 +83,103 @@ const TeacherDashboard = () => {
     }
   };
 
-  // Get tasks to display based on active tab
+  // Get tasks to display based on active tab and progress filter
   const getDisplayTasks = () => {
+    let tasks;
     switch (activeTab) {
       case 'my':
-        return myTasks;
+        tasks = myTasks;
+        break;
       case 'students':
-        return studentTasks;
+        tasks = studentTasks;
+        break;
       default:
-        return allTasks;
+        tasks = allTasks;
     }
+
+    // Apply progress filter
+    if (progressFilter === 'all') {
+      return tasks;
+    }
+    return tasks.filter((task) => task.progress === progressFilter);
   };
 
   const displayTasks = getDisplayTasks();
 
   return (
-    <div>
-      <h1>Teacher Dashboard</h1>
-      {user && (
-        <div>
-          <p>Welcome, {user.name}!</p>
-          <p>Email: {user.email}</p>
-        </div>
-      )}
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      {/* Tabs */}
-      <div style={{ margin: '1rem 0', borderBottom: '1px solid #ccc' }}>
-        <button
-          onClick={() => setActiveTab('all')}
-          style={{
-            padding: '0.5rem 1rem',
-            marginRight: '0.5rem',
-            border: 'none',
-            background: activeTab === 'all' ? '#007bff' : '#f0f0f0',
-            color: activeTab === 'all' ? 'white' : 'black',
-            cursor: 'pointer',
-          }}
-        >
-          All Tasks ({allTasks.length})
-        </button>
-        <button
-          onClick={() => setActiveTab('my')}
-          style={{
-            padding: '0.5rem 1rem',
-            marginRight: '0.5rem',
-            border: 'none',
-            background: activeTab === 'my' ? '#007bff' : '#f0f0f0',
-            color: activeTab === 'my' ? 'white' : 'black',
-            cursor: 'pointer',
-          }}
-        >
-          My Tasks ({myTasks.length})
-        </button>
-        <button
-          onClick={() => setActiveTab('students')}
-          style={{
-            padding: '0.5rem 1rem',
-            border: 'none',
-            background: activeTab === 'students' ? '#007bff' : '#f0f0f0',
-            color: activeTab === 'students' ? 'white' : 'black',
-            cursor: 'pointer',
-          }}
-        >
-          Students' Tasks ({studentTasks.length})
-        </button>
+    <div className="w-full px-6 py-8">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold text-black mb-2">Teacher Dashboard</h1>
+        {user && (
+          <div className="text-gray-600">
+            <p>Welcome, <span className="font-semibold text-black">{user.name}</span>!</p>
+            <p>Email: {user.email}</p>
+          </div>
+        )}
       </div>
 
-      {/* Create Task Button - only show for "My Tasks" or "All Tasks" */}
-      {activeTab !== 'students' && !showForm && (
-        <button onClick={() => setShowForm(true)}>Create New Task</button>
-      )}
+      {/* Tabs */}
+      <div className="mb-6 border-b-2 border-turquoise">
+        <div className="flex space-x-2">
+          <button
+            onClick={() => setActiveTab('all')}
+            className={`px-4 py-2 rounded-t-lg transition ${
+              activeTab === 'all'
+                ? 'bg-turquoise text-black font-semibold'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            All Tasks ({allTasks.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('my')}
+            className={`px-4 py-2 rounded-t-lg transition ${
+              activeTab === 'my'
+                ? 'bg-turquoise text-black font-semibold'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            My Tasks ({myTasks.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('students')}
+            className={`px-4 py-2 rounded-t-lg transition ${
+              activeTab === 'students'
+                ? 'bg-turquoise text-black font-semibold'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            Students' Tasks ({studentTasks.length})
+          </button>
+        </div>
+      </div>
+
+      <div className="mb-6 flex items-center justify-between">
+        {/* Create Task Button - only show for "My Tasks" or "All Tasks" */}
+        {activeTab !== 'students' && !showForm && (
+          <button onClick={() => setShowForm(true)} className="btn-primary">
+            Create New Task
+          </button>
+        )}
+
+        {/* Progress Filter */}
+        <div className="flex items-center space-x-2">
+          <label htmlFor="progressFilter" className="text-sm font-medium text-gray-700">
+            Filter by Progress:
+          </label>
+          <select
+            id="progressFilter"
+            value={progressFilter}
+            onChange={(e) => setProgressFilter(e.target.value)}
+            className="input w-auto"
+          >
+            <option value="all">All Tasks</option>
+            <option value="not-started">Not Started</option>
+            <option value="in-progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+      </div>
 
       {showForm && (
         <TaskForm

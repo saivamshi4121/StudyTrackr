@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -14,9 +17,13 @@ import './App.css';
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
+    <ToastProvider>
+      <AuthProvider>
+        <BrowserRouter>
+        <div className="w-full min-h-screen bg-white">
+          <Header />
+          <main className="w-full">
+            <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -53,9 +60,13 @@ function App() {
               </PrivateRoute>
             }
           />
-        </Routes>
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </BrowserRouter>
     </AuthProvider>
+    </ToastProvider>
   );
 }
 

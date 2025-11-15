@@ -67,84 +67,115 @@ const PrincipalManageTeachers = () => {
   };
 
   return (
-    <div>
-      <h2>Manage Teachers</h2>
-      {user && <p>Welcome, {user.name} (Principal)</p>}
+    <div className="w-full px-6 py-8">
+      <div className="mb-6">
+        <h2 className="text-3xl font-bold text-black mb-2">Manage Teachers</h2>
+        {user && (
+          <p className="text-gray-600">
+            Welcome, <span className="font-semibold text-black">{user.name}</span> (Principal)
+          </p>
+        )}
+      </div>
 
-      <div>
-        <h3>Create New Teacher</h3>
-        <form onSubmit={handleSubmit}>
+      <div className="card mb-8">
+        <h3 className="text-2xl font-bold text-black mb-4">Create New Teacher</h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name">Name:</label>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              Name
+            </label>
             <input
               type="text"
               id="name"
               name="name"
+              className="input"
               value={formData.name}
               onChange={handleChange}
               required
             />
           </div>
           <div>
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
             <input
               type="email"
               id="email"
               name="email"
+              className="input"
               value={formData.email}
               onChange={handleChange}
               required
             />
           </div>
           <div>
-            <label htmlFor="password">Password:</label>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
             <input
               type="password"
               id="password"
               name="password"
+              className="input"
               value={formData.password}
               onChange={handleChange}
               required
               minLength={6}
             />
           </div>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-          {success && <p style={{ color: 'green' }}>{success}</p>}
-          <button type="submit" disabled={loading}>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          {success && <p className="text-green-500 text-sm">{success}</p>}
+          <button type="submit" className="btn-primary" disabled={loading}>
             {loading ? 'Creating...' : 'Create Teacher'}
           </button>
         </form>
       </div>
 
-      <div>
-        <h3>All Teachers</h3>
+      <div className="card">
+        <h3 className="text-2xl font-bold text-black mb-4">All Teachers</h3>
         {loadingTeachers ? (
-          <p>Loading teachers...</p>
+          <p className="text-gray-600">Loading teachers...</p>
         ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Created At</th>
-              </tr>
-            </thead>
-            <tbody>
-              {teachers.length === 0 ? (
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-turquoise">
                 <tr>
-                  <td colSpan="3">No teachers found</td>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
+                    Email
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase tracking-wider">
+                    Created At
+                  </th>
                 </tr>
-              ) : (
-                teachers.map((teacher) => (
-                  <tr key={teacher._id}>
-                    <td>{teacher.name}</td>
-                    <td>{teacher.email}</td>
-                    <td>{new Date(teacher.createdAt).toLocaleDateString()}</td>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {teachers.length === 0 ? (
+                  <tr>
+                    <td colSpan="3" className="px-6 py-4 text-center text-gray-500">
+                      No teachers found
+                    </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : (
+                  teachers.map((teacher) => (
+                    <tr key={teacher._id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black">
+                        {teacher.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {teacher.email}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        {new Date(teacher.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

@@ -39,11 +39,28 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Token expired or invalid
+    const status = error.response?.status;
+    
+    if (status === 401) {
+      // Token expired or invalid - auto logout
       removeToken();
-      window.location.href = '/login';
+      
+      // Dispatch custom event for toast notification
+      window.dispatchEvent(new CustomEvent('auth-error', { 
+        detail: { message: 'Your session has expired. Please login again.' } 
+      }));
+      
+      // Redirect to login after a short delay to allow toast to show
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 1000);
+    } else if (status === 403) {
+      // Forbidden - show error message
+      window.dispatchEvent(new CustomEvent('auth-error', { 
+        detail: { message: 'You do not have permission to perform this action.' } 
+      }));
     }
+    
     return Promise.reject(error);
   }
 );

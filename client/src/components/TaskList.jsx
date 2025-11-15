@@ -18,13 +18,18 @@ const TaskList = ({ tasks, onUpdate, onDelete, readOnly = false, title = 'Tasks'
   };
 
   if (tasks.length === 0) {
-    return <p>No tasks found.</p>;
+    return (
+      <div className="card text-center py-8">
+        <p className="text-gray-500">No tasks found.</p>
+      </div>
+    );
   }
 
   return (
     <div>
-      <h3>{title} ({tasks.length})</h3>
-      {tasks.map((task) => (
+      <h3 className="text-2xl font-bold text-black mb-4">{title} ({tasks.length})</h3>
+      <div className="space-y-4">
+        {tasks.map((task) => (
         <TaskCard
           key={task._id}
           task={task}
@@ -35,7 +40,8 @@ const TaskList = ({ tasks, onUpdate, onDelete, readOnly = false, title = 'Tasks'
           onCancelEdit={readOnly ? null : handleCancelEdit}
           readOnly={readOnly}
         />
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
