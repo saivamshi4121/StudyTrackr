@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import taskService from '../services/task';
+import teacherService from '../services/teacher';
 import Modal from '../components/Modal';
 import TaskForm from '../components/TaskForm';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -20,7 +21,20 @@ const TeacherDashboard = () => {
 
   useEffect(() => {
     fetchTasks();
+    fetchAssignedStudents();
   }, [user]);
+
+  const fetchAssignedStudents = async () => {
+    try {
+      const response = await teacherService.getAssignedStudents();
+      if (response.success) {
+        setAssignedStudents(response.data || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch assigned students:', err);
+      // Don't show error toast, just log it
+    }
+  };
 
   const fetchTasks = async () => {
     try {
@@ -29,15 +43,6 @@ const TeacherDashboard = () => {
       if (response.success) {
         const tasks = response.data || [];
         setAllTasks(tasks);
-        
-        // Extract unique student IDs from tasks
-        const studentIds = new Set();
-        tasks.forEach((task) => {
-          if (String(task.userId) !== String(user?.id)) {
-            studentIds.add(task.userId);
-          }
-        });
-        setAssignedStudents(Array.from(studentIds));
       }
     } catch (err) {
       showError(err.response?.data?.message || 'Failed to fetch tasks. Please try again.');
@@ -170,7 +175,7 @@ const TeacherDashboard = () => {
             Welcome, {user?.name || 'Teacher'}!
           </h1>
           <p className="text-gray-600 text-lg">
-            Managing <span className="font-semibold text-black">{assignedStudents.length}</span> assigned students
+            Managing <span className="font-semibold text-black">{assignedStudents.length}</span> assigned student{assignedStudents.length !== 1 ? 's' : ''}
           </p>
           <p className="text-sm text-gray-500 mt-1">Role: Teacher</p>
         </div>
@@ -180,12 +185,12 @@ const TeacherDashboard = () => {
           <div className="mb-6 bg-gray-50 border border-gray-200 rounded-xl p-4">
             <h3 className="text-sm font-semibold text-gray-700 mb-2">Assigned Students:</h3>
             <div className="flex flex-wrap gap-2">
-              {assignedStudents.map((studentId, index) => (
+              {assignedStudents.map((student) => (
                 <span
-                  key={index}
+                  key={student._id}
                   className="inline-block bg-white border border-turquoise text-black px-3 py-1 rounded-full text-xs font-medium"
                 >
-                  Student ID: {String(studentId).substring(0, 8)}...
+                  {student.name} ({student.email})
                 </span>
               ))}
             </div>

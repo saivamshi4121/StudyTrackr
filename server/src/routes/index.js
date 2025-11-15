@@ -3,6 +3,7 @@ const express = require('express');
 const authRoutes = require('./authRoutes');
 const taskRoutes = require('./taskRoutes');
 const principalRoutes = require('./principalRoutes');
+const teacherRoutes = require('./teacherRoutes');
 const userRoutes = require('./userRoutes');
 
 const router = express.Router();
@@ -14,6 +15,7 @@ router.use('/', userRoutes); // Public user routes (e.g., /api/teachers)
 router.use('/auth', authRoutes);
 router.use('/tasks', taskRoutes);
 router.use('/principal', principalRoutes);
+router.use('/teacher', teacherRoutes);
 
 router.get('/health', (req, res) => {
   res.json({ success: true, message: 'Server is healthy' });

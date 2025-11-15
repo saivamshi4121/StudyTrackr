@@ -27,34 +27,40 @@ const StudentDashboard = () => {
       // Fallback: fetch teacher info if not in user object
       fetchTeacherInfo();
     }
-  }, [user]);
+  }, [user?.teacherId, user?.teacherInfo]);
 
   const fetchTeacherInfo = async () => {
     try {
-      // Teacher info should be included in user object from login response
-      if (user?.teacherInfo) {
-        setTeacherInfo(user.teacherInfo);
-      } else if (user?.teacherId) {
-        // Fallback: if teacherInfo not available, try to fetch it
-        try {
-          const response = await api.get(`/users/${user.teacherId}`);
-          if (response.data.success) {
-            setTeacherInfo({
-              id: response.data.data._id,
-              name: response.data.data.name,
-              email: response.data.data.email,
-            });
-          }
-        } catch (err) {
-          // If fetch fails, just show the ID
-          setTeacherInfo({ id: user.teacherId, name: user.teacherId });
-        }
+      if (!user?.teacherId) return;
+
+      // Try to fetch teacher info from API
+      const response = await api.get(`/users/${user.teacherId}`);
+      if (response.data.success && response.data.data) {
+        setTeacherInfo({
+          id: response.data.data._id,
+          name: response.data.data.name,
+          email: response.data.data.email,
+        });
       }
     } catch (err) {
       console.error('Failed to fetch teacher info:', err);
-      // Fallback to showing teacherId if available
-      if (user?.teacherId) {
-        setTeacherInfo({ id: user.teacherId, name: user.teacherId });
+      // If fetch fails, try to get from teachers list
+      try {
+        const teachersResponse = await api.get('/teachers');
+        if (teachersResponse.data.success) {
+          const teacher = teachersResponse.data.data.find(
+            (t) => String(t._id) === String(user.teacherId)
+          );
+          if (teacher) {
+            setTeacherInfo({
+              id: teacher._id,
+              name: teacher.name,
+              email: teacher.email,
+            });
+          }
+        }
+      } catch (teachersErr) {
+        console.error('Failed to fetch from teachers list:', teachersErr);
       }
     }
   };
@@ -179,7 +185,7 @@ const StudentDashboard = () => {
           <p className="text-gray-600 text-lg">
             Your tasks assigned under Teacher:{' '}
             <span className="font-semibold text-black">
-              {teacherInfo?.name || (user?.teacherInfo?.name) || user?.teacherId || 'N/A'}
+              {teacherInfo?.name || user?.teacherInfo?.name || 'Loading...'}
             </span>
           </p>
           <p className="text-sm text-gray-500 mt-1">Role: Student</p>

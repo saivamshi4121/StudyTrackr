@@ -17,7 +17,29 @@ const getTeachers = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  getTeachers,
+// Get user by ID (for fetching teacher info)
+const getUserById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id).select('_id name email role').lean();
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    return res.json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
+module.exports = {
+  getTeachers,
+  getUserById,
+};
