@@ -73,7 +73,12 @@ const Register = () => {
         if (loginResponse.success) {
           setToken(loginResponse.token);
           setUser(loginResponse.user);
-          navigate('/dashboard');
+          // Redirect based on role
+          if (loginResponse.user.role === 'student') {
+            navigate('/student/dashboard');
+          } else {
+            navigate('/dashboard');
+          }
         } else {
           navigate('/login');
         }

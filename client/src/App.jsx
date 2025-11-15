@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PrincipalLogin from './pages/PrincipalLogin';
 import PrincipalManageTeachers from './pages/PrincipalManageTeachers';
+import StudentDashboard from './pages/StudentDashboard';
+import TeacherDashboard from './pages/TeacherDashboard';
 import Dashboard from './pages/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
 import PrivateRouteRole from './components/PrivateRouteRole';
@@ -24,6 +26,22 @@ function App() {
             element={
               <PrivateRouteRole allowedRoles={['principal']}>
                 <PrincipalManageTeachers />
+              </PrivateRouteRole>
+            }
+          />
+          <Route
+            path="/student/dashboard"
+            element={
+              <PrivateRouteRole allowedRoles={['student']}>
+                <StudentDashboard />
+              </PrivateRouteRole>
+            }
+          />
+          <Route
+            path="/teacher/dashboard"
+            element={
+              <PrivateRouteRole allowedRoles={['teacher']}>
+                <TeacherDashboard />
               </PrivateRouteRole>
             }
           />

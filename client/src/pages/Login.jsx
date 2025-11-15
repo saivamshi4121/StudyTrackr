@@ -22,7 +22,14 @@ const Login = () => {
       if (response.success) {
         setToken(response.token);
         setUser(response.user);
-        navigate('/dashboard');
+        // Redirect based on role
+        if (response.user.role === 'student') {
+          navigate('/student/dashboard');
+        } else if (response.user.role === 'teacher') {
+          navigate('/teacher/dashboard');
+        } else {
+          navigate('/dashboard');
+        }
       } else {
         setError(response.message || 'Login failed');
       }
