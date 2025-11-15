@@ -8,7 +8,7 @@ export default function WelcomeScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate("/home");
-    }, 2500);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
@@ -33,8 +33,8 @@ export default function WelcomeScreen() {
               strings: ["Welcome to StudyTrackr"],
               autoStart: true,
               loop: false,
-              delay: 60,
-              deleteSpeed: 40,
+              delay: 100,
+              deleteSpeed: 50,
             }}
           />
         </h1>
