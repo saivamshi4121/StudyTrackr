@@ -41,8 +41,8 @@ const PrincipalLogin = () => {
   };
 
   return (
-    <div className="w-full min-h-screen flex justify-center items-start pt-20 bg-gray-50">
-      <div className="w-full max-w-lg bg-white shadow-xl p-8 rounded-xl border-2 border-turquoise">
+    <div className="w-full min-h-screen flex justify-center items-start pt-8 sm:pt-20 bg-white px-4 py-8">
+      <div className="w-full max-w-lg bg-white shadow-xl p-4 sm:p-8 rounded-xl border-2 border-turquoise">
         <h2 className="text-2xl font-bold mb-6 text-black">Principal Login</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ScreenSizeDisplay from './components/ScreenSizeDisplay';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -63,6 +64,7 @@ function App() {
             </Routes>
           </main>
           <Footer />
+          <ScreenSizeDisplay />
         </div>
       </BrowserRouter>
     </AuthProvider>

@@ -100,7 +100,7 @@ const StudentDashboard = () => {
   }, [tasks, progressFilter]);
 
   return (
-    <div className="w-full px-6 py-8">
+    <div className="w-full px-4 sm:px-6 py-4 sm:py-8">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-black mb-2">Student Dashboard</h1>
         {user && (

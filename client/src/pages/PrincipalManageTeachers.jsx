@@ -67,7 +67,7 @@ const PrincipalManageTeachers = () => {
   };
 
   return (
-    <div className="w-full px-6 py-8">
+    <div className="w-full px-4 sm:px-6 py-4 sm:py-8">
       <div className="mb-6">
         <h2 className="text-3xl font-bold text-black mb-2">Manage Teachers</h2>
         {user && (

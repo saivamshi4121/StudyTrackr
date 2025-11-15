@@ -12,11 +12,12 @@ const Header = () => {
   };
 
   return (
-    <nav className="w-full bg-turquoise px-6 py-4 shadow flex justify-between items-center">
-      <Link to="/" className="text-2xl font-bold text-black hover:text-orange transition">
-        StudyTrackr
-      </Link>
-      <div className="space-x-4 flex items-center">
+    <nav className="w-full bg-turquoise shadow-md py-4">
+      <div className="w-full flex flex-col md:flex-row justify-between items-center gap-4 px-4 md:px-8">
+        <Link to="/" className="text-xl md:text-2xl font-bold text-black hover:text-orange transition">
+          StudyTrackr
+        </Link>
+        <div className="space-x-2 md:space-x-4 flex items-center flex-wrap justify-center">
         {isAuthenticated ? (
           <>
             <span className="text-black">Welcome, {user?.name}</span>
@@ -49,6 +50,7 @@ const Header = () => {
             </Link>
           </>
         )}
+        </div>
       </div>
     </nav>
   );
