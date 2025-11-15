@@ -36,6 +36,13 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null }) => {
       newErrors.title = 'Title must be at least 3 characters';
     }
 
+    // Description validation
+    if (!formData.description.trim()) {
+      newErrors.description = 'Description is required';
+    } else if (formData.description.trim().length < 5) {
+      newErrors.description = 'Description must be at least 5 characters';
+    }
+
     // Due date validation (if provided)
     if (formData.dueDate) {
       const dueDate = new Date(formData.dueDate);
@@ -102,7 +109,7 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null }) => {
       </div>
       <div>
         <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-          Description
+          Description: *
         </label>
         <textarea
           id="description"
@@ -111,7 +118,9 @@ const TaskForm = ({ onSubmit, onCancel, initialData = null }) => {
           value={formData.description}
           onChange={handleChange}
           rows="3"
+          required
         />
+        {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
       </div>
       <div>
         <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 mb-1">
