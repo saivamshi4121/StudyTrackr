@@ -50,11 +50,14 @@ const Login = () => {
       if (response.success) {
         setToken(response.token);
         setUser(response.user);
-        // Redirect based on role
+        
+        // Redirect based on role (assignment requirement)
         if (response.user.role === 'student') {
           navigate('/student/dashboard');
         } else if (response.user.role === 'teacher') {
           navigate('/teacher/dashboard');
+        } else if (response.user.role === 'principal') {
+          navigate('/principal/teachers');
         } else {
           navigate('/dashboard');
         }
@@ -122,4 +125,3 @@ const Login = () => {
 };
 
 export default Login;
-

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import taskService from '../services/task';
+import api from '../services/api';
 import Modal from '../components/Modal';
 import TaskForm from '../components/TaskForm';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -19,23 +20,42 @@ const StudentDashboard = () => {
 
   useEffect(() => {
     fetchTasks();
-    if (user?.teacherId) {
+    // Use teacherInfo from user object if available (from login response)
+    if (user?.teacherInfo) {
+      setTeacherInfo(user.teacherInfo);
+    } else if (user?.teacherId) {
+      // Fallback: fetch teacher info if not in user object
       fetchTeacherInfo();
     }
   }, [user]);
 
   const fetchTeacherInfo = async () => {
     try {
-      // Fetch teacher info using teacherId
-      // Note: This assumes there's an endpoint to get user by ID, or we can include it in the user context
-      // For now, we'll use the teacherId from user object
-      if (user.teacherId) {
-        // If teacher info is not in user context, we might need to fetch it
-        // For now, we'll just display the ID
-        setTeacherInfo({ id: user.teacherId, name: 'Loading...' });
+      // Teacher info should be included in user object from login response
+      if (user?.teacherInfo) {
+        setTeacherInfo(user.teacherInfo);
+      } else if (user?.teacherId) {
+        // Fallback: if teacherInfo not available, try to fetch it
+        try {
+          const response = await api.get(`/users/${user.teacherId}`);
+          if (response.data.success) {
+            setTeacherInfo({
+              id: response.data.data._id,
+              name: response.data.data.name,
+              email: response.data.data.email,
+            });
+          }
+        } catch (err) {
+          // If fetch fails, just show the ID
+          setTeacherInfo({ id: user.teacherId, name: user.teacherId });
+        }
       }
     } catch (err) {
       console.error('Failed to fetch teacher info:', err);
+      // Fallback to showing teacherId if available
+      if (user?.teacherId) {
+        setTeacherInfo({ id: user.teacherId, name: user.teacherId });
+      }
     }
   };
 
@@ -159,7 +179,7 @@ const StudentDashboard = () => {
           <p className="text-gray-600 text-lg">
             Your tasks assigned under Teacher:{' '}
             <span className="font-semibold text-black">
-              {teacherInfo?.name || user?.teacherId || 'N/A'}
+              {teacherInfo?.name || (user?.teacherInfo?.name) || user?.teacherId || 'N/A'}
             </span>
           </p>
           <p className="text-sm text-gray-500 mt-1">Role: Student</p>

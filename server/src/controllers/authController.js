@@ -96,6 +96,19 @@ const login = async (req, res, next) => {
 
     const token = createToken({ id: user._id, role: user.role });
 
+    // Populate teacher info if user is a student
+    let teacherInfo = null;
+    if (user.role === 'student' && user.teacherId) {
+      const teacher = await User.findById(user.teacherId).select('name email').lean();
+      if (teacher) {
+        teacherInfo = {
+          id: teacher._id,
+          name: teacher.name,
+          email: teacher.email,
+        };
+      }
+    }
+
     return res.json({
       success: true,
       message: 'Login successful',
@@ -106,6 +119,7 @@ const login = async (req, res, next) => {
         email: user.email,
         role: user.role,
         teacherId: user.teacherId,
+        teacherInfo, // Include teacher info for students
       },
     });
   } catch (error) {

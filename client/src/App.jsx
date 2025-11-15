@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import ScreenSizeDisplay from './components/ScreenSizeDisplay';
 import WelcomeScreen from './pages/WelcomeScreen';
 import Home from './pages/Home';
+import Features from './pages/Features';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PrincipalLogin from './pages/PrincipalLogin';
@@ -30,6 +31,7 @@ function App() {
                 <main className="w-full">
                   <Routes>
                     <Route path="/home" element={<Home />} />
+                    <Route path="/features" element={<Features />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/principal/login" element={<PrincipalLogin />} />
