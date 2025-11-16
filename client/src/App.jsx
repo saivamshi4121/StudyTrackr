@@ -27,56 +27,139 @@ function App() {
         <BrowserRouter>
           <ScrollToTop />
           <Routes>
+            {/* Welcome Screen - No Header/Footer */}
             <Route path="/" element={<WelcomeScreen />} />
-            <Route path="/*" element={
+            
+            {/* All other routes - With Header/Footer */}
+            <Route path="/home" element={
               <div className="w-full min-h-screen bg-white">
                 <Header />
                 <main className="w-full">
-                  <Routes>
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/features" element={<Features />} />
-                    <Route path="/pricing" element={<Pricing />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/principal/login" element={<PrincipalLogin />} />
-                    <Route
-                      path="/principal/teachers"
-                      element={
-                        <PrivateRouteRole allowedRoles={['principal']}>
-                          <PrincipalManageTeachers />
-                        </PrivateRouteRole>
-                      }
-                    />
-                    <Route
-                      path="/student/dashboard"
-                      element={
-                        <PrivateRouteRole allowedRoles={['student']}>
-                          <StudentDashboard />
-                        </PrivateRouteRole>
-                      }
-                    />
-                    <Route
-                      path="/teacher/dashboard"
-                      element={
-                        <PrivateRouteRole allowedRoles={['teacher']}>
-                          <TeacherDashboard />
-                        </PrivateRouteRole>
-                      }
-                    />
-                    <Route
-                      path="/dashboard"
-                      element={
-                        <PrivateRoute>
-                          <Dashboard />
-                        </PrivateRoute>
-                      }
-                    />
-                  </Routes>
-                        </main>
-                        <Footer />
-                      </div>
+                  <Home />
+                </main>
+                <Footer />
+              </div>
             } />
+            
+            <Route path="/features" element={
+              <div className="w-full min-h-screen bg-white">
+                <Header />
+                <main className="w-full">
+                  <Features />
+                </main>
+                <Footer />
+              </div>
+            } />
+            
+            <Route path="/pricing" element={
+              <div className="w-full min-h-screen bg-white">
+                <Header />
+                <main className="w-full">
+                  <Pricing />
+                </main>
+                <Footer />
+              </div>
+            } />
+            
+            <Route path="/contact" element={
+              <div className="w-full min-h-screen bg-white">
+                <Header />
+                <main className="w-full">
+                  <Contact />
+                </main>
+                <Footer />
+              </div>
+            } />
+            
+            <Route path="/login" element={
+              <div className="w-full min-h-screen bg-white">
+                <Header />
+                <main className="w-full">
+                  <Login />
+                </main>
+                <Footer />
+              </div>
+            } />
+            
+            <Route path="/register" element={
+              <div className="w-full min-h-screen bg-white">
+                <Header />
+                <main className="w-full">
+                  <Register />
+                </main>
+                <Footer />
+              </div>
+            } />
+            
+            <Route path="/principal/login" element={
+              <div className="w-full min-h-screen bg-white">
+                <Header />
+                <main className="w-full">
+                  <PrincipalLogin />
+                </main>
+                <Footer />
+              </div>
+            } />
+            
+            <Route
+              path="/principal/teachers"
+              element={
+                <div className="w-full min-h-screen bg-white">
+                  <Header />
+                  <main className="w-full">
+                    <PrivateRouteRole allowedRoles={['principal']}>
+                      <PrincipalManageTeachers />
+                    </PrivateRouteRole>
+                  </main>
+                  <Footer />
+                </div>
+              }
+            />
+            
+            <Route
+              path="/student/dashboard"
+              element={
+                <div className="w-full min-h-screen bg-white">
+                  <Header />
+                  <main className="w-full">
+                    <PrivateRouteRole allowedRoles={['student']}>
+                      <StudentDashboard />
+                    </PrivateRouteRole>
+                  </main>
+                  <Footer />
+                </div>
+              }
+            />
+            
+            <Route
+              path="/teacher/dashboard"
+              element={
+                <div className="w-full min-h-screen bg-white">
+                  <Header />
+                  <main className="w-full">
+                    <PrivateRouteRole allowedRoles={['teacher']}>
+                      <TeacherDashboard />
+                    </PrivateRouteRole>
+                  </main>
+                  <Footer />
+                </div>
+              }
+            />
+            
+            <Route
+              path="/dashboard"
+              element={
+                <div className="w-full min-h-screen bg-white">
+                  <Header />
+                  <main className="w-full">
+                    <PrivateRoute>
+                      <Dashboard />
+                    </PrivateRoute>
+                  </main>
+                  <Footer />
+                </div>
+              }
+            />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
