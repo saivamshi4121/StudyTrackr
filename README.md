@@ -257,19 +257,18 @@ VITE_API_URL=http://localhost:5000/api
 
 ### Step 3: Deploy Frontend
 
-1. In Render Dashboard, click **"New +"** → **"Web Service"**
+1. In Render Dashboard, click **"New +"** → **"Static Site"** (NOT Web Service)
 2. Connect the same GitHub repository
 3. Configure the service:
    - **Name:** `studytrackr-frontend`
-   - **Environment:** `Node`
    - **Root Directory:** `client`
    - **Build Command:** `npm install && npm run build`
-   - **Start Command:** `npm run preview`
+   - **Publish Directory:** `dist`
 4. Add Environment Variable:
    - `VITE_API_URL` = `https://studytrackrbackend.onrender.com/api`
    
    **Note:** This is already configured in the code, but you can override it with environment variable if needed.
-5. Click **"Create Web Service"**
+5. Click **"Create Static Site"**
 6. Wait for deployment to complete
 
 ### Step 4: Update CORS (if needed)

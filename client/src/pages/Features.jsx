@@ -107,7 +107,7 @@ const Features = () => {
              {/* Right: Illustration */}
              <div className="animate-fade-in-right">
                <img
-                 src="./public/assets/feature_section_1.png"
+                 src="/assets/feature_section_1.png"
                  alt="Task Dashboard Preview"
                  className="w-full rounded-xl shadow-lg image-hover"
                />
@@ -123,7 +123,7 @@ const Features = () => {
              {/* Left: Illustration */}
              <div className="order-2 md:order-1 animate-fade-in-left">
                <img
-                 src="./public/assets/featurepage_2.png"
+                 src="/assets/featurepage_2.png"
                  alt="Student–Teacher Connection"
                  className="w-full rounded-xl shadow-lg image-hover"
                />
