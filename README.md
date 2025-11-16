@@ -43,7 +43,7 @@ StudyTrackr is an educational task management platform designed to streamline ta
 ```mermaid
 flowchart LR
 
-  A[React Frontend\n(Vite + Tailwind)] -->|HTTP Requests| B[Express Backend\n(Node.js)]
+  A[React Frontend <br/> (Vite + Tailwind)] -->|HTTP Requests| B[Express Backend <br/> (Node.js)]
 
   B -->|Queries| C[(MongoDB Database)]
 
@@ -52,6 +52,8 @@ flowchart LR
   A --> A1[AuthContext]
 
   A --> A2[Role-based Routing]
+
+
 
   B --> B1[Auth Middleware]
 
