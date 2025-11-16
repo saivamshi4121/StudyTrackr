@@ -271,16 +271,14 @@ VITE_API_URL=http://localhost:5000/api
 5. Click **"Create Static Site"**
 6. Wait for deployment to complete
 
-### Step 4: Update CORS (if needed)
+### Step 4: Update CORS Configuration
 
-If you encounter CORS errors, update `server/src/index.js`:
+After deploying frontend, update backend environment variable:
 
-```javascript
-app.use(cors({
-  origin: ['https://your-frontend-url.onrender.com', 'http://localhost:5173'],
-  credentials: true
-}));
-```
+**Backend Environment Variable:**
+- `FRONTEND_URL` = `https://studytrackr-5ckd.onrender.com`
+
+**Note:** The CORS configuration is already set up to accept requests from the deployed frontend URL. Just set the `FRONTEND_URL` environment variable in Render dashboard.
 
 ### Environment Variables Summary
 
@@ -290,6 +288,7 @@ MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/studytrackr
 JWT_SECRET=your-generated-secret-key
 NODE_ENV=production
 PORT=5000
+FRONTEND_URL=https://studytrackr-5ckd.onrender.com
 ```
 
 **Frontend (.env) - Optional (defaults to production URL):**

@@ -16,7 +16,7 @@ services:
       - key: JWT_SECRET
         sync: false  # Set this in Render dashboard
       - key: FRONTEND_URL
-        sync: false  # Set this to your frontend URL (e.g., https://studytrackr-frontend.onrender.com)
+        value: https://studytrackr-5ckd.onrender.com  # Deployed frontend URL
     healthCheckPath: /api/health
 
   # Frontend Static Site
