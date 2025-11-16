@@ -269,13 +269,20 @@ All assignment requirements are fully implemented and tested.
 
 ## 📸 Screenshots
 
-_Placeholder for application screenshots:_
+### Welcome Screen
+<img src="screenshots/welcome-screen.png" alt="Welcome Screen" width="600" />
 
-- Welcome Screen with Typewriter Animation
-- Student Dashboard with Task Management
-- Teacher Dashboard with Student Task Monitoring
-- Login/Register Pages
-- Responsive Mobile View
+### Login Page
+<img src="screenshots/login-page.png" alt="Login Page" width="600" />
+
+### Registration Page
+<img src="screenshots/register-page.png" alt="Registration Page" width="600" />
+
+### Student Dashboard
+<img src="screenshots/student-dashboard.png" alt="Student Dashboard" width="600" />
+
+### Teacher Dashboard
+<img src="screenshots/teacher-dashboard.png" alt="Teacher Dashboard" width="600" />
 
 ## 🎥 Video Walkthrough
 
