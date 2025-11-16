@@ -7,6 +7,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base: "/", // REQUIRED FOR RENDER - Ensures JS bundle loads correctly
   publicDir: "public",
   build: {
     outDir: "dist",
