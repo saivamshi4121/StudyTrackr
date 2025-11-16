@@ -1,137 +1,381 @@
 # StudyTrackr
 
-A task management system for students, teachers, and principals with role-based access control.
+A modern, full-stack task management system built with MERN stack for students, teachers, and principals with comprehensive role-based access control.
 
-## Backend
+## 📋 Overview
 
-### Tech Stack
+StudyTrackr is an educational task management platform designed to streamline task assignment, tracking, and monitoring between students and teachers. The system enforces strict role-based permissions to ensure data security and proper workflow management.
 
-- **Node.js** with **Express.js** (MVC architecture)
-- **MongoDB** with **Mongoose** ODM
-- **JWT** for authentication
-- **bcrypt** for password hashing
-- **express-validator** for input validation
+### Core Features
 
-### Project Structure
+- **Student Role** (Assignment Requirement)
+  - Create, read, update, and delete personal tasks
+  - Filter tasks by progress status (not-started, in-progress, completed)
+  - View assigned teacher information
+  - Track task progress with visual indicators
+  - Secure authentication with JWT tokens
+
+- **Teacher Role** (Assignment Requirement)
+  - Create and manage personal tasks
+  - View tasks from assigned students (read-only)
+  - Monitor student progress across all assigned students
+  - Filter tasks by ownership (My Tasks / Student Tasks) and progress
+  - Cannot modify or delete student-created tasks
+  - View list of assigned students
+
+- **Principal Role** (Optional Feature - Bonus)
+  - Create and manage teacher accounts
+  - View all teachers in the system
+  - Cannot access task management features (isolated from assignment logic)
+
+- **System Features**
+  - JWT-based authentication with secure token storage
+  - Role-based routing and access control
+  - Responsive UI built with Tailwind CSS
+  - Real-time error handling with user-friendly notifications
+  - RESTful API architecture
+  - MongoDB database with Mongoose ODM
+
+## 🏗️ Architecture
+
+### MERN Stack Architecture
+
+```mermaid
+flowchart LR
+
+  A[React Frontend\n(Vite + Tailwind)] -->|HTTP Requests| B[Express Backend\n(Node.js)]
+
+  B -->|Queries| C[(MongoDB Database)]
+
+
+
+  A --> A1[AuthContext]
+
+  A --> A2[Role-based Routing]
+
+  B --> B1[Auth Middleware]
+
+  B --> B2[Task Controller]
+
+  B --> B3[User Controller]
+
+
+
+  C --> C1[Users Collection]
+
+  C --> C2[Tasks Collection]
+```
+
+### Authentication Flow (JWT)
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant F as Frontend
+  participant B as Backend
+  participant DB as MongoDB
+
+  U->>F: Enter email/password
+  F->>B: POST /auth/login
+  B->>DB: Verify user + password
+  DB-->>B: Valid user
+  B-->>F: Return JWT Token + User Info
+  F->>F: Save token in localStorage (AuthContext)
+
+  U->>F: Access protected route
+  F->>B: GET /tasks (Authorization: Bearer TOKEN)
+  B->>B: Validate token (auth middleware)
+  B->>DB: Fetch tasks based on role
+  DB-->>B: Return tasks
+  B-->>F: Send tasks
+```
+
+### Role-Based Access Control Flow
+
+```mermaid
+flowchart TD
+    A[User Login] -->|JWT Token| B[Authenticate Middleware]
+    B -->|Valid Token| C[Extract User Role]
+    C -->|student| D[Student Dashboard]
+    C -->|teacher| E[Teacher Dashboard]
+    C -->|principal| F[Principal Dashboard]
+    
+    D -->|GET /tasks| G[Filter: userId = student.id]
+    E -->|GET /tasks| H[Filter: userId = teacher.id OR<br/>userId IN assignedStudentIds]
+    
+    I[Update/Delete Task] -->|Check Ownership| J{Is Owner?}
+    J -->|Yes| K[Allow Operation]
+    J -->|No| L[403 Forbidden]
+```
+
+## 📁 Project Structure
 
 ```
-server/
-├── src/
-│   ├── config/          # Database configuration
-│   ├── controllers/      # Request handlers
-│   ├── middlewares/      # Auth & error middleware
-│   ├── models/           # Mongoose schemas
-│   ├── routes/           # API route definitions
-│   └── utils/            # Constants & validators
-├── .env.example          # Environment variables template
-└── package.json
+StudyTrackr/
+├── client/                 # React frontend application
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── context/        # React Context (Auth, Toast)
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API service layer
+│   │   └── styles/         # Global styles & theme
+│   └── package.json
+│
+├── server/                 # Node.js backend application
+│   ├── src/
+│   │   ├── config/         # Database configuration
+│   │   ├── controllers/    # Request handlers
+│   │   ├── middlewares/    # Auth & error middleware
+│   │   ├── models/         # Mongoose schemas
+│   │   ├── routes/         # API route definitions
+│   │   └── utils/          # Validators & constants
+│   └── package.json
+│
+└── README.md              # This file
 ```
 
-### Setup
+## 🚀 Quick Start
 
-1. **Install dependencies:**
+### Prerequisites
+
+- **Node.js** (v16 or higher)
+- **MongoDB** (local installation or MongoDB Atlas)
+- **npm** or **yarn**
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd StudyTrackr
+   ```
+
+2. **Install backend dependencies**
    ```bash
    cd server
    npm install
    ```
 
-2. **Configure environment variables:**
-   Create a `.env` file in the `server/` directory:
-   ```env
-   MONGO_URI=mongodb://localhost:27017/studytrackr
-   JWT_SECRET=your-secret-key-here
-   PORT=5000
-   NODE_ENV=development
-   ```
-   
-   **Note:** Generate a strong JWT_SECRET:
+3. **Install frontend dependencies**
    ```bash
-   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   cd ../client
+   npm install
    ```
 
-3. **Start the server:**
+### Environment Setup
+
+#### Backend Environment Variables
+
+Create a `.env` file in the `server/` directory:
+
+```env
+MONGO_URI=mongodb://localhost:27017/studytrackr
+JWT_SECRET=your-super-secret-jwt-key-here
+PORT=5000
+NODE_ENV=development
+```
+
+**Generate a secure JWT secret:**
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+#### Frontend Environment Variables
+
+Create a `.env` file in the `client/` directory (if using custom API URL):
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+**Note:** The default API URL is `http://localhost:5000/api` (configured in `client/src/services/api.js`).
+
+### Running the Application
+
+1. **Start the MongoDB server** (if using local MongoDB)
    ```bash
-   npm run dev    # Development mode with nodemon
+   mongod
+   ```
+
+2. **Start the backend server**
+   ```bash
+   cd server
+   npm run dev    # Development mode with auto-reload
+   # or
    npm start      # Production mode
    ```
 
-### API Endpoints
+3. **Start the frontend development server**
+   ```bash
+   cd client
+   npm run dev
+   ```
 
-#### Authentication
+4. **Access the application**
+   - Frontend: `http://localhost:5173`
+   - Backend API: `http://localhost:5000/api`
 
-- `POST /api/auth/signup` - Register a new user
-  - **Body:** `{ name, email, password, role, teacherId? }`
-  - **Rules:** Students must provide `teacherId`
-  
-- `POST /api/auth/login` - Login user
-  - **Body:** `{ email, password }`
-  - **Returns:** JWT token + user data
+## 👥 User Flow
 
-#### Tasks (Protected)
+### Role-Based Navigation
 
-- `GET /api/tasks` - Get tasks
-  - **Students:** Only their own tasks
-  - **Teachers:** Their tasks + tasks from assigned students
-  - **Principals:** Not allowed
+```mermaid
+flowchart TD
 
-- `POST /api/tasks` - Create a task
-  - **Body:** `{ title, description?, dueDate?, progress? }`
-  - **Rules:** `userId` is automatically set to logged-in user
-  - **Progress:** `"not-started" | "in-progress" | "completed"`
+  Start([Visit Website]) --> Login[Login Page]
 
-- `PUT /api/tasks/:id` - Update a task
-  - **Students:** Can update only their own tasks
-  - **Teachers:** Can update only tasks they created
 
-- `DELETE /api/tasks/:id` - Delete a task
-  - **Students:** Can delete only their own tasks
-  - **Teachers:** Can delete only tasks they created
 
-#### Principal Routes (Principal Only)
+  Login -->|Valid Student| SD[Student Dashboard]
 
-- `POST /api/principal/teachers` - Create a teacher account
-  - **Body:** `{ name, email, password }`
+  Login -->|Valid Teacher| TD[Teacher Dashboard]
 
-- `GET /api/principal/teachers` - View all teachers
+  Login -->|Valid Principal| PD[Principal Dashboard]
 
-### Authentication
 
-All protected routes require a JWT token in the Authorization header:
-```
-Authorization: Bearer <token>
-```
 
-### Role-Based Access Control
+  SD --> S1[View Own Tasks]
 
-#### Students
-- Must provide `teacherId` at signup
-- Can only view/manage their own tasks
+  SD --> S2[Create Task]
 
-#### Teachers
-- Can view their own tasks + tasks from assigned students
-- Can only create/update/delete tasks they created
-- Cannot create tasks for students
+  SD --> S3[Update/Delete Task]
 
-#### Principals
-- Cannot access task endpoints
-- Can create teacher accounts
-- Can view all teachers
 
-### Error Handling
 
-All errors return a consistent format:
-```json
-{
-  "success": false,
-  "message": "Error message here"
-}
+  TD --> T1[View Own Tasks]
+
+  TD --> T2[View Student Tasks]
+
+  TD --> T3[Cannot Edit/Delete Student Tasks]
+
+
+
+  PD --> P1[Create Teachers]
+
+  PD --> P2[Manage Teachers]
 ```
 
-### Assignment Rules Compliance
+## 🎯 Assignment Compliance
 
-✅ Students must provide `teacherId` at signup  
-✅ Students can only access their own tasks  
-✅ Teachers can view tasks of assigned students + their own  
-✅ Teachers can update/delete only tasks they created  
-✅ Principals cannot touch tasks  
+✅ **Students must provide `teacherId` at signup**  
+✅ **Students can only access their own tasks**  
+✅ **Teachers can view tasks of assigned students + their own**  
+✅ **Teachers can update/delete only tasks they created**  
+✅ **Principals cannot touch tasks** (Optional feature properly isolated)
 
+All assignment requirements are fully implemented and tested.
+
+## 📸 Screenshots
+
+_Placeholder for application screenshots:_
+
+- Welcome Screen with Typewriter Animation
+- Student Dashboard with Task Management
+- Teacher Dashboard with Student Task Monitoring
+- Login/Register Pages
+- Responsive Mobile View
+
+## 🎥 Video Walkthrough
+
+_Placeholder for video walkthrough demonstrating:_
+
+1. **Login as Student**
+   - Student registration with teacher selection
+   - Student login flow
+   - Student dashboard features (CRUD operations)
+   - Task filtering by progress
+
+2. **Login as Teacher**
+   - Teacher registration
+   - Teacher login flow
+   - Teacher dashboard features
+   - Viewing student tasks (read-only)
+   - Managing own tasks
+
+3. **Restricted Task Visibility**
+   - Students can only see their own tasks
+   - Teachers can see assigned student tasks
+   - Ownership validation demonstration
+
+4. **CRUD Demonstration**
+   - Create task
+   - Update task progress
+   - Delete task
+   - Authorization errors (403) for unauthorized operations
+
+5. **Code Walkthrough**
+   - Authentication middleware
+   - Role-based access control logic
+   - Teacher-student relationship implementation
+   - Task filtering logic per role
+
+## 📚 Documentation
+
+- **[Backend Documentation](./server/README.md)** - Complete API documentation, database schemas, and backend setup
+- **[Frontend Documentation](./client/README.md)** - React components, routing, and frontend architecture
+
+## 🛠️ Technology Stack
+
+### Frontend
+- **React 19** - UI framework
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **React Router DOM** - Client-side routing
+- **Axios** - HTTP client
+- **React Context API** - State management
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - ODM for MongoDB
+- **JWT** - Authentication tokens
+- **bcrypt** - Password hashing
+- **express-validator** - Input validation
+
+## 🔒 Security Features
+
+- JWT token-based authentication
+- Password hashing with bcrypt (salt rounds: 10)
+- Role-based authorization middleware
+- Protected API routes
+- CORS configuration
+- Input validation with express-validator
+- Secure token storage in localStorage
+- Auto-logout on token expiration
+
+## 📝 API Documentation
+
+See [Backend README](./server/README.md) for complete API documentation including:
+
+- Authentication endpoints
+- Task CRUD operations
+- Role-based access rules
+- Request/response formats
+- Error handling
+
+##  Contributing
+
+This is an assignment project. For questions or issues, please refer to the assignment guidelines.
+
+##  License
+
+This project is created for educational purposes as part of an academic assignment.
+
+##  Acknowledgments
+
+Special thanks to the educational institution and instructors for providing the assignment requirements.
+
+## AI Usage Acknowledgment
+
+Some parts of this project were developed with assistance from AI tools for UI design ideas, boilerplate code, and documentation. All core logic and architecture were implemented manually.
+
+AI was used only for non-critical areas like UI design inspiration, writing helper boilerplate, and improving documentation clarity.
+
+All core logic—including authentication, authorization, role-based access control, task management, backend API structure, database models, and frontend integration—was written, designed, and implemented manually.
+
+AI assistance was used as a productivity helper, not as a substitute for development effort.
+
+---
+
+**Built with  for modern education**
