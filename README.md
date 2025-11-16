@@ -268,8 +268,22 @@ VITE_API_URL=http://localhost:5000/api
    - `VITE_API_URL` = `https://studytrackrbackend.onrender.com/api`
    
    **Note:** This is already configured in the code, but you can override it with environment variable if needed.
-5. Click **"Create Static Site"**
-6. Wait for deployment to complete
+
+5. **Configure Routing (CRITICAL - Required for React Router):**
+   - After creating the static site, go to **Settings** → **Redirects and Rewrites** section
+   - Click **"Add Redirect"** or **"Add Rewrite"**
+   - Configure as follows:
+     - **Type:** Rewrite (NOT Redirect)
+     - **Source Path:** `/*` (matches all paths)
+     - **Destination Path:** `/index.html`
+     - **Status Code:** `200` (NOT 301 or 302)
+   - Click **"Save"**
+   - This ensures React Router handles all routes client-side
+   
+   **Why this is needed:** When you refresh `/home` or `/student/dashboard`, Render tries to find a file at that path. Without this rewrite, you get a 404. With it, Render serves `index.html` and React Router handles the routing.
+
+6. Click **"Create Static Site"** (or save if editing)
+7. Wait for deployment to complete
 
 ### Step 4: Update CORS Configuration
 
