@@ -8,14 +8,14 @@ StudyTrackr is an educational task management platform designed to streamline ta
 
 ### Core Features
 
-- **Student Role** (Assignment Requirement)
+- **Student Role** 
   - Create, read, update, and delete personal tasks
   - Filter tasks by progress status (not-started, in-progress, completed)
   - View assigned teacher information
   - Track task progress with visual indicators
   - Secure authentication with JWT tokens
 
-- **Teacher Role** (Assignment Requirement)
+- **Teacher Role** 
   - Create and manage personal tasks
   - View tasks from assigned students (read-only)
   - Monitor student progress across all assigned students
@@ -23,10 +23,10 @@ StudyTrackr is an educational task management platform designed to streamline ta
   - Cannot modify or delete student-created tasks
   - View list of assigned students
 
-- **Principal Role** (Optional Feature - Bonus)
+- **Principal Role** (Optional Feature)
   - Create and manage teacher accounts
   - View all teachers in the system
-  - Cannot access task management features (isolated from assignment logic)
+  - Cannot access task management features 
 
 - **System Features**
   - JWT-based authentication with secure token storage
@@ -370,7 +370,7 @@ flowchart TD
   PD --> P2[Manage Teachers]
 ```
 
-## 🎯 Assignment Compliance
+## 🎯Compliance
 
 ✅ **Students must provide `teacherId` at signup**  
 ✅ **Students can only access their own tasks**  
@@ -378,7 +378,7 @@ flowchart TD
 ✅ **Teachers can update/delete only tasks they created**  
 ✅ **Principals cannot touch tasks** (Optional feature properly isolated)
 
-All assignment requirements are fully implemented and tested.
+
 
 ## 📸 Screenshots
 
@@ -476,17 +476,9 @@ See [Backend README](./server/README.md) for complete API documentation includin
 - Request/response formats
 - Error handling
 
-##  Contributing
-
-This is an assignment project. For questions or issues, please refer to the assignment guidelines.
-
 ##  License
 
-This project is created for educational purposes as part of an academic assignment.
-
-##  Acknowledgments
-
-Special thanks to the educational institution and instructors for providing the assignment requirements.
+This project is created for educational purposes as part of an academic.
 
 ## AI Usage Acknowledgment
 
