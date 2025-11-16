@@ -113,7 +113,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Benefit Card 1 */}
             <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
-              <div className="text-4xl mb-4 text-turquoise">📋</div>
+              
               <h3 className="text-xl font-bold text-black mb-2">Organize Tasks Smoothly</h3>
               <p className="text-gray-600">
                 Keep all your assignments and tasks in one organized place with intuitive categorization.
@@ -122,7 +122,7 @@ export default function Home() {
 
             {/* Benefit Card 2 */}
             <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
-              <div className="text-4xl mb-4 text-orange">👁️</div>
+              
               <h3 className="text-xl font-bold text-black mb-2">Monitor Student Progress</h3>
               <p className="text-gray-600">
                 Teachers can easily track student progress and provide timely feedback and support.
@@ -131,7 +131,7 @@ export default function Home() {
 
             {/* Benefit Card 3 */}
             <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
-              <div className="text-4xl mb-4 text-turquoise">⚡</div>
+              
               <h3 className="text-xl font-bold text-black mb-2">Real-time Updates</h3>
               <p className="text-gray-600">
                 Get instant notifications and updates on task status, deadlines, and progress changes.
@@ -140,7 +140,7 @@ export default function Home() {
 
             {/* Benefit Card 4 */}
             <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition">
-              <div className="text-4xl mb-4 text-orange">🔒</div>
+             
               <h3 className="text-xl font-bold text-black mb-2">Secure & Role-based</h3>
               <p className="text-gray-600">
                 Advanced security with role-based access control for students, teachers, and principals.
@@ -278,15 +278,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-
-      {/* Footer Space */}
-      <footer className="w-full bg-black text-white py-8">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-gray-400">
-            &copy; 2024 StudyTrackr. All rights reserved. Built for modern education.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

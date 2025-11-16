@@ -3,10 +3,12 @@ import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import ScreenSizeDisplay from './components/ScreenSizeDisplay';
+import ScrollToTop from './components/ScrollToTop';
 import WelcomeScreen from './pages/WelcomeScreen';
 import Home from './pages/Home';
 import Features from './pages/Features';
+import Pricing from './pages/Pricing';
+import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import PrincipalLogin from './pages/PrincipalLogin';
@@ -23,6 +25,7 @@ function App() {
     <ToastProvider>
       <AuthProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<WelcomeScreen />} />
             <Route path="/*" element={
@@ -32,6 +35,8 @@ function App() {
                   <Routes>
                     <Route path="/home" element={<Home />} />
                     <Route path="/features" element={<Features />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/contact" element={<Contact />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/principal/login" element={<PrincipalLogin />} />
@@ -68,10 +73,9 @@ function App() {
                       }
                     />
                   </Routes>
-                </main>
-                <Footer />
-                <ScreenSizeDisplay />
-              </div>
+                        </main>
+                        <Footer />
+                      </div>
             } />
           </Routes>
         </BrowserRouter>
