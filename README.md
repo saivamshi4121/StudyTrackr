@@ -217,6 +217,119 @@ VITE_API_URL=http://localhost:5000/api
    - Frontend: `http://localhost:5173`
    - Backend API: `http://localhost:5000/api`
 
+## 🚀 Deployment on Render
+
+### Prerequisites
+
+- GitHub repository with your code
+- MongoDB Atlas account (for production database)
+- Render account (free tier available)
+
+### Step 1: Prepare MongoDB Atlas
+
+1. Create a MongoDB Atlas account at [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
+2. Create a new cluster (free tier M0)
+3. Create a database user
+4. Whitelist IP addresses (use `0.0.0.0/0` for Render)
+5. Get your connection string: `mongodb+srv://username:password@cluster.mongodb.net/studytrackr`
+
+### Step 2: Deploy Backend
+
+1. Go to [Render Dashboard](https://dashboard.render.com)
+2. Click **"New +"** → **"Web Service"**
+3. Connect your GitHub repository
+4. Configure the service:
+   - **Name:** `studytrackr-backend`
+   - **Environment:** `Node`
+   - **Root Directory:** `server`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+5. Add Environment Variables:
+   - `MONGO_URI` = Your MongoDB Atlas connection string
+   - `JWT_SECRET` = Generate with: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+   - `NODE_ENV` = `production`
+   - `PORT` = `5000` (Render sets this automatically, but good to have)
+6. Click **"Create Web Service"**
+7. Wait for deployment to complete
+8. Copy your backend URL (e.g., `https://studytrackr-backend.onrender.com`)
+
+### Step 3: Deploy Frontend
+
+1. In Render Dashboard, click **"New +"** → **"Web Service"**
+2. Connect the same GitHub repository
+3. Configure the service:
+   - **Name:** `studytrackr-frontend`
+   - **Environment:** `Node`
+   - **Root Directory:** `client`
+   - **Build Command:** `npm install && npm run build`
+   - **Start Command:** `npm run preview`
+4. Add Environment Variable:
+   - `VITE_API_URL` = `https://your-backend-url.onrender.com/api` (use your actual backend URL)
+5. Click **"Create Web Service"**
+6. Wait for deployment to complete
+
+### Step 4: Update CORS (if needed)
+
+If you encounter CORS errors, update `server/src/index.js`:
+
+```javascript
+app.use(cors({
+  origin: ['https://your-frontend-url.onrender.com', 'http://localhost:5173'],
+  credentials: true
+}));
+```
+
+### Environment Variables Summary
+
+**Backend (.env):**
+```env
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/studytrackr
+JWT_SECRET=your-generated-secret-key
+NODE_ENV=production
+PORT=5000
+```
+
+**Frontend (.env):**
+```env
+VITE_API_URL=https://your-backend-url.onrender.com/api
+```
+
+### Alternative: Using render.yaml
+
+If you prefer infrastructure as code, use the provided `render.yaml` file:
+
+1. Push `render.yaml` to your repository root
+2. In Render Dashboard, click **"New +"** → **"Blueprint"**
+3. Connect your repository
+4. Render will automatically detect and configure services from `render.yaml`
+
+### Post-Deployment Checklist
+
+- [ ] Backend is accessible at `https://your-backend.onrender.com/api/health`
+- [ ] Frontend environment variable `VITE_API_URL` points to backend
+- [ ] MongoDB Atlas cluster is accessible from Render
+- [ ] CORS is configured correctly
+- [ ] Test login/signup functionality
+- [ ] Test task CRUD operations
+- [ ] Verify JWT tokens are working
+
+### Troubleshooting
+
+**Issue: Backend won't start**
+- Check MongoDB connection string
+- Verify all environment variables are set
+- Check Render logs for errors
+
+**Issue: Frontend can't connect to backend**
+- Verify `VITE_API_URL` is set correctly
+- Check CORS configuration
+- Ensure backend URL includes `/api` at the end
+
+**Issue: 401 Unauthorized errors**
+- Verify JWT_SECRET is set in backend
+- Check token is being sent in Authorization header
+- Verify token expiration settings
+
 ## 👥 User Flow
 
 ### Role-Based Navigation
