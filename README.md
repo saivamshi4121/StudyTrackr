@@ -251,7 +251,9 @@ VITE_API_URL=http://localhost:5000/api
    - `PORT` = `5000` (Render sets this automatically, but good to have)
 6. Click **"Create Web Service"**
 7. Wait for deployment to complete
-8. Copy your backend URL (e.g., `https://studytrackr-backend.onrender.com`)
+8. Copy your backend URL (e.g., `https://studytrackrbackend.onrender.com`)
+
+**Note:** Your backend URL is `https://studytrackrbackend.onrender.com`
 
 ### Step 3: Deploy Frontend
 
@@ -264,7 +266,9 @@ VITE_API_URL=http://localhost:5000/api
    - **Build Command:** `npm install && npm run build`
    - **Start Command:** `npm run preview`
 4. Add Environment Variable:
-   - `VITE_API_URL` = `https://your-backend-url.onrender.com/api` (use your actual backend URL)
+   - `VITE_API_URL` = `https://studytrackrbackend.onrender.com/api`
+   
+   **Note:** This is already configured in the code, but you can override it with environment variable if needed.
 5. Click **"Create Web Service"**
 6. Wait for deployment to complete
 
@@ -289,9 +293,13 @@ NODE_ENV=production
 PORT=5000
 ```
 
-**Frontend (.env):**
+**Frontend (.env) - Optional (defaults to production URL):**
 ```env
-VITE_API_URL=https://your-backend-url.onrender.com/api
+# For local development:
+VITE_API_URL=http://localhost:5000/api
+
+# Production (already set as default):
+VITE_API_URL=https://studytrackrbackend.onrender.com/api
 ```
 
 ### Alternative: Using render.yaml
@@ -305,7 +313,7 @@ If you prefer infrastructure as code, use the provided `render.yaml` file:
 
 ### Post-Deployment Checklist
 
-- [ ] Backend is accessible at `https://your-backend.onrender.com/api/health`
+- [ ] Backend is accessible at `https://studytrackrbackend.onrender.com/api/health`
 - [ ] Frontend environment variable `VITE_API_URL` points to backend
 - [ ] MongoDB Atlas cluster is accessible from Render
 - [ ] CORS is configured correctly

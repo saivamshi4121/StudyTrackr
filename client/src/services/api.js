@@ -14,8 +14,10 @@ export const removeToken = () => {
 };
 
 // Base API configuration
+// Production backend URL: https://studytrackrbackend.onrender.com/api
+// For local development, set VITE_API_URL=http://localhost:5000/api in .env
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://studytrackrbackend.onrender.com/api',
   headers: {
     'Content-Type': 'application/json',
   },

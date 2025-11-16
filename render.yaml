@@ -28,6 +28,6 @@ services:
     startCommand: cd client && npm run preview
     envVars:
       - key: VITE_API_URL
-        sync: false  # Set this to your backend URL (e.g., https://studytrackr-backend.onrender.com/api)
+        value: https://studytrackrbackend.onrender.com/api  # Production backend URL
     staticPublishPath: ./client/dist
 
